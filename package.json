@@ -1,0 +1,23 @@
+{
+  "name": "monitor-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FAKHAR558/monitor-server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FAKHAR558/monitor-server/issues"
+  },
+  "homepage": "https://github.com/FAKHAR558/monitor-server#readme",
+  "description": "",
+  "dependencies": {
+    "ws": "^8.18.3"
+  }
+}
