@@ -1,44 +1,46 @@
 // wsClient.js
 const WebSocket = require('ws');
-const { handle15mCandle, handle5mCandle, handle1mCandle } = require('./logic');
-
-const symbol = 'btcusdt';
+const symbols = require('./config/symbols');
+const {
+  handle15mCandle,
+  handle5mCandle,
+  handle1mCandle
+} = require('./logic/handleCandles');
 
 function initWS() {
-  const streams = [
-    `${symbol}@kline_15m`,
-    `${symbol}@kline_5m`,
-    `${symbol}@kline_1m`
-  ].join('/');
+  const streams = symbols.flatMap(symbol => ([
+    `${symbol.toLowerCase()}@kline_15m`,
+    `${symbol.toLowerCase()}@kline_5m`,
+    `${symbol.toLowerCase()}@kline_1m`
+  ])).join('/');
 
   const ws = new WebSocket(`wss://stream.binance.com:9443/stream?streams=${streams}`);
 
-  ws.on('open', () => {
-    console.log('✅ Connected to Binance WebSocket');
-  });
+  ws.on('open', () => console.log('✅ Connected to Binance WebSocket'));
 
-  ws.on('message', (data) => {
+  ws.on('message', async (data) => {
     const msg = JSON.parse(data);
     const candle = msg.data.k;
     const interval = candle.i;
+    const symbol = msg.data.s;
 
-    if (!candle.x) return; // Only use closed candles
+    if (!candle.x) return;
 
     switch (interval) {
       case '15m':
-        handle15mCandle(candle);
+        await handle15mCandle(candle, symbol);
         break;
       case '5m':
-        handle5mCandle(candle);
+        await handle5mCandle(candle, symbol);
         break;
       case '1m':
-        handle1mCandle(candle);
+        await handle1mCandle(candle, symbol);
         break;
     }
   });
 
-  ws.on('close', () => console.log('❌ Disconnected from WebSocket'));
-  ws.on('error', err => console.error('WebSocket Error:', err));
+  ws.on('error', (err) => console.error('❌ WebSocket Error:', err));
+  ws.on('close', () => console.log('🔌 WebSocket Closed'));
 }
 
 module.exports = initWS;

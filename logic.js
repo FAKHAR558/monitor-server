@@ -20,9 +20,10 @@ function handle15mCandle(candle) {
 
   console.log(`[DEBUG] 15m Candle: ${new Date(candle.t).toISOString()} | Closed: ${candle.x}`);
   console.log(`[DEBUG] UTC Time: ${hours}:${minutes}, Start of Candle: ${new Date(candle.t).toISOString()}, Closed: ${candle.x}`);
-
+  console.log(typeof(minutes), typeof(hours))
+  console.log(state.trackingStarted)
   // Start only at 10:30 UTC (which is start time of the 10:30–10:45 candle)
-  if (hours === 11 && minutes === 15 && candle.x && !state.trackingStarted) {
+  if (candle.x && !state.trackingStarted) {
     console.log("analyzing");
     state.trackingStarted = true;
     state.rangeHigh = parseFloat(candle.h);

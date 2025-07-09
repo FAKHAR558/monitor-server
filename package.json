@@ -18,6 +18,9 @@
   "homepage": "https://github.com/FAKHAR558/monitor-server#readme",
   "description": "",
   "dependencies": {
+    "dotenv": "^17.1.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.16.2",
     "ws": "^8.18.3"
   }
 }
