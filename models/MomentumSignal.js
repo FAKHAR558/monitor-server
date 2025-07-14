@@ -14,15 +14,26 @@ const LevelSchema = new mongoose.Schema({
   consolidated: { type: Boolean, default: false },
   tradeConfirmed: { type: Boolean, default: false },
   tradeConfirmedAt: { type: Date },
+  stopLoss: Decimal128,
+  takeProfit: Decimal128,
+  confirmation: {
+    type: String,
+    enum: ['CLEAR', 'NOISY', null],
+    default: 'CLEAR'
+  },
+  pendingStopLoss: {
+    value: Decimal128,
+    candleTime: Date
+   },
   retestCandle: {
     open: Decimal128,
     close: Decimal128,
     high: Decimal128,
     low: Decimal128
   },
-  tradeConfirmation: {
+  status: {
     type: String,
-    enum: ['confirmed', 'failed', null],
+    enum: ['PROFIT', 'LOSS', null],
     default: null
   },
   recentCandles: [
